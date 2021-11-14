@@ -35,6 +35,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include "utils/pathvisit.h"
 #include "extflat/extflat.h"
 #include "extflat/EFint.h"
+#include "textio/textio.h"
 
 #define        atoCap(s)       ((EFCapValue)atof(s))
 
@@ -281,7 +282,7 @@ EFArgs(argc, argv, err_result, argsProc, cdata)
 		break;
 	    case 'h':
 		if (argsProc != NULL) (*argsProc)(&argc, &argv, cdata);
-		TxPrintf(usage_text);
+		TxPrintf("%s", usage_text);
 		if (err_result != NULL) *err_result = TRUE;
 		return NULL;
 

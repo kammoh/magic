@@ -5181,7 +5181,7 @@ esac
 stub_defs=""
 extra_defs="$extra_defs -DCAD_DIR=\\\"\${LIBDIR}\\\" -DBIN_DIR=\\\"\${BINDIR}\\\""
 X_LIBS=
-X_CFLAGS=
+X_CFLAGS="-g -O0 -Wall -Wpedantic -Wfortify-source -Wformat -Wformat-pedantic -Wformat-security -Werror=format-pedantic -Werror=fortify-source -Wno-implicit-function-declaration"
 CPPFLAGS=
 INC_SPECS=
 DEPEND_FLAG=
@@ -5201,7 +5201,7 @@ ld_extra_objs=""
 programs=""
 rl_defs=
 rl_libs=
-gr_cflags=
+gr_cflags="-g -O0 -Wall -Wpedantic -Wfortify-source -Wformat -Wformat-pedantic -Wformat-security -Werror=format-pedantic -Werror=fortify-source"
 gr_dflags=
 gr_libs=
 gr_srcs=

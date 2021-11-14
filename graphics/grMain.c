@@ -374,12 +374,12 @@ GrIsDisplay(disp1, disp2)
  * ----------------------------------------------------------------------------
  */
 
-void
-GrGuessDisplayType(graphics, mouse, display, monitor)
-    char **graphics;		/* default device for sending out graphics */
-    char **mouse;		/* default device for reading mouse (tablet) */
-    char **display;		/* default type of device (OGL, etc...) */
-    char **monitor;		/* default type of monitor (pale, std) */
+void GrGuessDisplayType(
+    char **graphics,		/* default device for sending out graphics */
+    char **mouse,		/* default device for reading mouse (tablet) */
+    char **display,		/* default type of device (OGL, etc...) */
+    char **monitor		/* default type of monitor (pale, std) */
+)
 {
     bool onSun;			/* Are we on a Sun? */
     bool haveX;			/* are we running under X? */

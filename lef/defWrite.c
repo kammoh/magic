@@ -21,6 +21,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 
 #include "tcltk/tclmagic.h"
 #include "utils/magic.h"
+#include "textio/textio.h"
 #include "utils/geometry.h"
 #include "tiles/tile.h"
 #include "utils/hash.h"
@@ -272,7 +273,7 @@ defnodeCount(node, res, cap, total)
 	if (pwr)
 	{
 	    /* Diagnostic */
-	    TxPrintf("Node %s is defined in the \"globals\" array\n");
+	    TxPrintf("Node is defined in the \"globals\" array\n");
 	    node->efnode_flags |= EF_SPECIAL;
 	}
 
@@ -281,7 +282,7 @@ defnodeCount(node, res, cap, total)
 	if (pwr && (!strcmp(cp, pwr)))
 	{
 	    /* Diagnostic */
-	    TxPrintf("Node %s matches VDD variable definition!\n");
+	    TxPrintf("Node matches VDD variable definition!\n");
 	    node->efnode_flags |= EF_SPECIAL;
 	}
 
@@ -289,7 +290,7 @@ defnodeCount(node, res, cap, total)
 	if (pwr && (!strcmp(cp, pwr)))
 	{
 	    /* Diagnostic */
-	    TxPrintf("Node %s matches GND variable definition!\n");
+	    TxPrintf("Node matches GND variable definition!\n");
 	    node->efnode_flags |= EF_SPECIAL;
 	}
 
@@ -478,7 +479,7 @@ defWriteRouteWidth(defdata, width)
     int width;
 {
     float oscale = defdata->scale;
-    char numstr[12];
+    char numstr[13];
     sprintf(numstr, "%.10g", ((float)width * defdata->scale));
     defCheckForBreak(strlen(numstr) + 1, defdata);
     fprintf(defdata->f, "%s ", numstr);
@@ -511,7 +512,7 @@ defWriteCoord(defdata, x, y, orient)
     unsigned char orient;
 {
     FILE *f = defdata->f;
-    char numstr[12];
+    char numstr[13];
     int ctot = 4;
 
     /* The "12" here is just a fudge factor;  it is not crucial */
@@ -608,7 +609,7 @@ defnodeVisit(node, res, cap, defdata)
     char ndn2[256];
     FILE *f = defdata->f;
     CellDef *def = defdata->def;
-    float oscale = defdata->scale;
+    // float oscale = defdata->scale;
     TileTypeBitMask tmask, *rmask;
     TileType magictype;
     EFNodeName *thisnn;

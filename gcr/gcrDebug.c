@@ -105,8 +105,8 @@ GCRRouteFromFile(fname)
     times(&tbuf1);
     (void) GCRroute(ch);
     times(&tbuf2);
-    TxPrintf("Time   :  %5.2fu  %5.2fs\n", (tbuf2.tms_utime -
-	    tbuf1.tms_utime)/60.0, (tbuf2.tms_stime-tbuf1.tms_stime)*60);
+    TxPrintf("Time   :  %5.2fu  %5.2fs\n", (double)(tbuf2.tms_utime -
+	    tbuf1.tms_utime)/60.0, (double)(tbuf2.tms_stime-tbuf1.tms_stime)*60);
 
     gcrDumpResult(ch, GcrShowEnd);
     gcrShowMap(ch);
@@ -287,7 +287,7 @@ gcrSaveChannel(ch)
     char name[128];
     int flags, i, j;
 
-    (void) sprintf(name, "chan.%p", ch);
+    (void) sprintf(name, "chan.%p", (void *) ch);
     fp = fopen(name, "w");
     if (fp == NULL)
     {
@@ -454,33 +454,33 @@ gcrDumpPins(ch)
     TxPrintf("LEFT PINS\n");
     for(i=0; i<=ch->gcr_width; i++)
     {
-	TxPrintf("Location [%d]=%d:  x=%d, y=%d, pNext=%d, pPrev=%d, id=%d\n",
-	i, &pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
-	pinArray[i].gcr_pNext, pinArray[i].gcr_pPrev, pinArray[i].gcr_pId);
+	TxPrintf("Location [%d]=%p:  x=%d, y=%d, pNext=%p, pPrev=%p, id=%d\n",
+	i, (void*)&pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
+	(void*)pinArray[i].gcr_pNext, (void*)pinArray[i].gcr_pPrev, pinArray[i].gcr_pId->gcr_Id);
     }
     pinArray=ch->gcr_rPins;
     TxPrintf("RIGHT PINS\n");
     for(i=0; i<=ch->gcr_width; i++)
     {
-	TxPrintf("Location [%d]=%d:  x=%d, y=%d, pNext=%d, pPrev=%d, id=%d\n",
-	i, &pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
-	pinArray[i].gcr_pNext, pinArray[i].gcr_pPrev, pinArray[i].gcr_pId);
+	TxPrintf("Location [%d]=%p:  x=%d, y=%d, pNext=%p, pPrev=%p, id=%d\n",
+	i, (void*)&pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
+	(void*)pinArray[i].gcr_pNext, (void*)pinArray[i].gcr_pPrev, pinArray[i].gcr_pId->gcr_Id);
     }
     pinArray=ch->gcr_bPins;
     TxPrintf("BOTTOM PINS\n");
     for(i=0; i<=ch->gcr_length; i++)
     {
-	TxPrintf("Location [%d]=%d:  x=%d, y=%d, pNext=%d, pPrev=%d, id=%d\n",
-	i, &pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
-	pinArray[i].gcr_pNext, pinArray[i].gcr_pPrev, pinArray[i].gcr_pId);
+	TxPrintf("Location [%d]=%p:  x=%d, y=%d, pNext=%p, pPrev=%p, id=%d\n",
+	i, (void*)&pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
+	(void*)pinArray[i].gcr_pNext, (void*)pinArray[i].gcr_pPrev, pinArray[i].gcr_pId->gcr_Id);
     }
     pinArray=ch->gcr_tPins;
     TxPrintf("TOP PINS\n");
     for(i=0; i<=ch->gcr_length; i++)
     {
-	TxPrintf("Location [%d]=%d:  x=%d, y=%d, pNext=%d, pPrev=%d, id=%d\n",
-	i, &pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
-	pinArray[i].gcr_pNext, pinArray[i].gcr_pPrev, pinArray[i].gcr_pId);
+	TxPrintf("Location [%d]=%p:  x=%d, y=%d, pNext=%p, pPrev=%p, id=%d\n",
+	i, (void*)&pinArray[i], pinArray[i].gcr_x, pinArray[i].gcr_y,
+	(void*)pinArray[i].gcr_pNext, (void*)pinArray[i].gcr_pPrev, pinArray[i].gcr_pId->gcr_Id);
     }
 }
 
@@ -507,9 +507,9 @@ gcrDumpPinList(pin, dir)
 {
     if (pin)
     {
-	TxPrintf("Location (%d, %d)=%x:  pNext=%d, pPrev=%d, id=%d\n",
-		pin->gcr_x, pin->gcr_y, pin,
-		pin->gcr_pNext, pin->gcr_pPrev, pin->gcr_pId);
+	TxPrintf("Location (%d, %d)=%p:  pNext=%p, pPrev=%p, id=%d\n",
+		pin->gcr_x, pin->gcr_y, (void*)pin,
+		(void*)pin->gcr_pNext, (void*)pin->gcr_pPrev, pin->gcr_pId->gcr_Id);
 	if (dir) gcrDumpPinList(pin->gcr_pNext, dir);
 	else gcrDumpPinList(pin->gcr_pPrev, dir);
     }
@@ -545,8 +545,8 @@ gcrDumpCol(col, size)
 	TxPrintf("[%2d] hi=%6d(%c) lo=%6d(%c) h=%6d v=%6d w=%6d f=%4d\n", i,
 	    col[i].gcr_hi, col[i].gcr_hOk ? 'T' : 'F',
 	    col[i].gcr_lo, col[i].gcr_lOk ? 'T' : 'F',
-	    col[i].gcr_h, col[i].gcr_v,
-	    col[i].gcr_wanted, col[i].gcr_flags);
+	    col[i].gcr_h->gcr_Id, col[i].gcr_v->gcr_Id,
+	    col[i].gcr_wanted->gcr_Id, col[i].gcr_flags);
 }
 
 /*

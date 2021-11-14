@@ -2680,12 +2680,12 @@ DBCellWriteFile(cellDef, f)
 
 #define FPRINTF(f,s)\
 {\
-     if (fprintf(f,s) == EOF) goto ioerror;\
+     if (fprintf(f, "%s", s) == EOF) goto ioerror;\
      DBFileOffset += strlen(s);\
 }
 #define FPRINTR(f,s)\
 {\
-     if (fprintf(f,s) == EOF) return 1;\
+     if (fprintf(f, "%s", s) == EOF) return 1;\
      DBFileOffset += strlen(s);\
 }
 

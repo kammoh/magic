@@ -487,10 +487,11 @@ HeapAddDLong(heap, data, id)
 }
 
 void
-HeapAddFloat(heap, data, id)
-    Heap *heap;
-    float data;
-    char *id;
+HeapAddFloat(
+    Heap *heap,
+    float data,
+    char *id
+)
 {
     union heUnion pKey;
 
@@ -552,7 +553,7 @@ HeapDump(heap)
 	if (heap->he_stringId == TRUE)
 	    printf("//id %s; ", heap->he_list[i].he_id);
 	else
-	    printf("//id %p; ", heap->he_list[i].he_id);
+	    printf("//id %p; ", (void *) heap->he_list[i].he_id);
     }
     printf("\n");
 }

@@ -939,10 +939,7 @@ TxDispatch(f)
 /*--------------------------------------------------------------*/
 
 void
-TxParseString(str, q, event)
-    char *str;
-    caddr_t q;		/* unused */
-    caddr_t event;	/* always NULL (ignored) */
+TxParseString(char *str, void* q /* unused */, void* event /* always NULL (ignored) */)
 {
     char *reply;
 

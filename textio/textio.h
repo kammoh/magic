@@ -28,21 +28,21 @@
 #include "utils/magic.h"
 
 #ifdef MAGIC_WRAPPER
-extern char *TxBuffer;
-extern unsigned char TxInputRedirect;
+char *TxBuffer;
+unsigned char TxInputRedirect;
 
-#define TX_INPUT_NORMAL 	0	/* keys translated as macros	   */
-#define TX_INPUT_REDIRECTED	1	/* keys redirected to terminal	   */
-#define TX_INPUT_PROCESSING	2	/* executing a command via redirection */
-#define TX_INPUT_PENDING_RESET	3	/* about to switch back to state 0 */
+#define TX_INPUT_NORMAL 0        /* keys translated as macros	   */
+#define TX_INPUT_REDIRECTED 1    /* keys redirected to terminal	   */
+#define TX_INPUT_PROCESSING 2    /* executing a command via redirection */
+#define TX_INPUT_PENDING_RESET 3 /* about to switch back to state 0 */
 
 #endif
 
-extern int TxCurButtons;
+int TxCurButtons;
 
 /* These should really be defined by the application, not hard-coded */
-#define TX_LONG_CMD	':'	/* Way of invoking a long command. */
-#define TX_LONG_CMD2	';'	/* Alternate way of invoking a long command. */
+#define TX_LONG_CMD ':'  /* Way of invoking a long command. */
+#define TX_LONG_CMD2 ';' /* Alternate way of invoking a long command. */
 
 /*
  * Procedure to print text on stdout and stderr.
@@ -52,50 +52,56 @@ extern int TxCurButtons;
 #define Vfprintf Tcl_printf
 #else
 #define Vfprintf vfprintf
-#endif  /* MAGIC_WRAPPER */
+#endif /* MAGIC_WRAPPER */
 
 /* printing procedures */
-extern bool TxPrintOn();  	/* enables TxPrintf output */
-extern bool TxPrintOff();	/* disables TxPrintf output */
-extern void TxFlush();
-extern void TxFlushOut();
-extern void TxFlushErr();
-extern void TxVisChar();
-extern void TxUseMore();
-extern void TxStopMore();
+bool TxPrintOn();  /* enables TxPrintf output */
+bool TxPrintOff(); /* disables TxPrintf output */
+void TxFlush();
+void TxFlushOut();
+void TxFlushErr();
+void TxVisChar();
+void TxUseMore();
+void TxStopMore();
 
 /* printing procedures with variable arguments lists */
-extern void TxError(char *, ...);
-extern void TxPrintf(char *, ...);
-extern char *TxPrintString(char *, ...);
+void TxError(char *, ...);
+
+#ifdef TX_PRINTF_MACRO
+#define TxPrintf(...) if (txPrintFlag) fprintf(stderr, __VA_ARGS__)
+#else
+void TxPrintf(char *, ...);
+#endif
+
+char *TxPrintString(char *, ...);
 
 /* input procedures */
-extern char *TxGetLinePrompt();
-extern char *TxGetLine();
-extern int TxGetChar();
-extern int TxDialog();
+char *TxGetLinePrompt();
+char *TxGetLine();
+int TxGetChar();
+int TxDialog();
 
 /* prompting procedures */
-extern void TxSetPrompt();
-extern void TxPrompt();
-extern void TxPromptOnNewLine();
-extern void TxUnPrompt();
-extern void TxRestorePrompt();
-extern void TxReprint();
+void TxSetPrompt();
+void TxPrompt();
+void TxPromptOnNewLine();
+void TxUnPrompt();
+void TxRestorePrompt();
+void TxReprint();
 
 /* terminal-state procedures */
-extern void TxSetTerminal();
-extern void TxResetTerminal();
-extern char TxEOFChar;			/* The current EOF character */
-extern char TxInterruptChar;		/* The current interrupt character */
+void TxSetTerminal();
+void TxResetTerminal();
+char TxEOFChar;       /* The current EOF character */
+char TxInterruptChar; /* The current interrupt character */
 
 /* command procedures */
-extern void TxDispatch();
+void TxDispatch();
 
 /* variables that tell if stdin and stdout are to a terminal */
-extern bool TxStdinIsatty;
-extern bool TxStdoutIsatty;
-#define TxInteractive	(TxStdinIsatty && TxStdoutIsatty)
+bool TxStdinIsatty;
+bool TxStdoutIsatty;
+#define TxInteractive (TxStdinIsatty && TxStdoutIsatty)
 
 /* Misc procs */
 void TxInit();
@@ -103,6 +109,6 @@ void TxInit();
 void TxInitReadline();
 #endif
 
-#define   TX_MAX_OPEN_FILES       20
+#define TX_MAX_OPEN_FILES 20
 
 #endif /* _TEXTIO_H */

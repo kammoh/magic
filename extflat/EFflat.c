@@ -33,6 +33,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include "utils/utils.h"
 #include "extflat/extflat.h"
 #include "extflat/EFint.h"
+#include "textio/textio.h"
 
 /* Initial size of the hash table of all flattened node names */
 #define	INITFLATSIZE	1024

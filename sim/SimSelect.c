@@ -27,6 +27,7 @@ static char sccsid[] = "@(#)SimSelect.c	4.14 MAGIC (Berkeley) 10/3/85";
 
 #include "tcltk/tclmagic.h"
 #include "utils/magic.h"
+#include "textio/textio.h"
 #include "utils/geometry.h"
 #include "tiles/tile.h"
 #include "utils/hash.h"

@@ -17,6 +17,7 @@
 #include <fcntl.h>
 
 #include "utils/magic.h"
+#include "textio/textio.h"
 #include "utils/hash.h"
 #include "utils/geometry.h"
 #include "tiles/tile.h"

@@ -30,6 +30,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #endif
 
 #include "utils/magic.h"
+#include "textio/textio.h"
 #include "utils/main.h"
 #include "utils/utils.h"
 #include "utils/hash.h"

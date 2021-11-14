@@ -24,6 +24,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header$";
 
 #include "tcltk/tclmagic.h"
 #include "utils/magic.h"
+#include "textio/textio.h"
 #include "utils/geometry.h"
 #include "tiles/tile.h"
 #include "utils/hash.h"
@@ -140,23 +141,24 @@ lefPrint(char *leffmt, float invalue)
  */
 
 FILE *
-lefFileOpen(def, file, suffix, mode, prealfile)
-    CellDef *def;	/* Cell whose .lef file is to be written.  Should
+lefFileOpen(
+    CellDef *def,	/* Cell whose .lef file is to be written.  Should
 			 * be NULL if file is being opened for reading.
 			 */
-    char *file;		/* If non-NULL, open 'name'.lef; otherwise,
+    char *file,		/* If non-NULL, open 'name'.lef; otherwise,
 			 * derive filename from 'def' as described
 			 * above.
 			 */
-    char *suffix;	/* Either ".lef" for LEF files or ".def" for DEF files */
-    char *mode;		/* Either "r" or "w", the mode in which the LEF/DEF
+    char *suffix,	/* Either ".lef" for LEF files or ".def" for DEF files */
+    char *mode,		/* Either "r" or "w", the mode in which the LEF/DEF
 			 * file is to be opened.
 			 */
-    char **prealfile;	/* If this is non-NULL, it gets set to point to
+    char **prealfile	/* If this is non-NULL, it gets set to point to
 			 * a string holding the name of the LEF/DEF file.
 			 */
+)
 {
-    char namebuf[512], *name, *endp, *ends;
+    char namebuf[PATH_MAX], *name, *endp, *ends;
     char *locsuffix;
     char *pptr;
     int len;
@@ -706,10 +708,9 @@ lefYankContacts(tile, cdata)
 {
     lefClient *lefdata = (lefClient *)cdata;
     Rect area;
-    TileType ttype, ptype, stype;
+    TileType ttype, stype;
     LefMapping *lefMagicToLefLayer;
-    TileTypeBitMask sMask, *lrmask;
-    bool iscut;
+    TileTypeBitMask *lrmask;
 
     /* Ignore marked tiles */
     if (tile->ti_client != (ClientData)CLIENTDEFAULT) return 0;

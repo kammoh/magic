@@ -31,6 +31,7 @@
 #include "dbwind/dbwind.h"
 #include "graphics/grTkCommon.h"
 #include "graphics/glyphs.h"
+#include "textio/textio.h"
 
 /* Variables declared by grClip.c */
 

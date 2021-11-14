@@ -598,7 +598,7 @@ glPathPrint(path)
 	TxPrintf("(%d,%d) cost=%d pcost=%d pId=%d/%d\n",
 		pin->gcr_point.p_x, pin->gcr_point.p_y,
 		rp->gl_cost, pin->gcr_cost,
-		pin->gcr_pId, pin->gcr_pSeg);
+		pin->gcr_pId->gcr_Id, pin->gcr_pSeg);
 	TxPrintf("\tchan=(%d,%d,%d,%d)/%d\n",
 		ch->gcr_area.r_xbot, ch->gcr_area.r_ybot,
 		ch->gcr_area.r_xtop, ch->gcr_area.r_ytop,

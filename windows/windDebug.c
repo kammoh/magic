@@ -30,7 +30,9 @@ static char rcsid[] __attribute__ ((unused)) = "$Header$";
 #include "textio/textio.h"
 #include "textio/txcommands.h"
 
-
+void windPrintWindow(MagWindow *w);
+void windDump();
+void windPrintCommand(TxCommand *cmd);
 
 /*
  * ----------------------------------------------------------------------------
@@ -46,14 +48,12 @@ static char rcsid[] __attribute__ ((unused)) = "$Header$";
  * ----------------------------------------------------------------------------
  */
 
-void
-windPrintWindow(w)
-    MagWindow *w;
+void windPrintWindow(MagWindow *w)
 {
     LinkedRect *lr;
 
     TxPrintf("\nWindow %d: '%s'\n", w->w_wid, w->w_caption);
-    TxPrintf("  Client %x  Surface %x \n", w->w_client, w->w_surfaceID);
+    TxPrintf("  Client %x  Surface %x \n", (unsigned)w->w_client, (unsigned)w->w_surfaceID);
 
     TxPrintf("  All area (%d, %d) (%d, %d)\n",
 	w->w_allArea.r_xbot, w->w_allArea.r_ybot,
@@ -96,8 +96,7 @@ windPrintWindow(w)
  * ----------------------------------------------------------------------------
  */
 
-void
-windDump()
+void windDump()
 {
     MagWindow *w;
     clientRec *rc;
@@ -106,9 +105,9 @@ windDump()
     for (rc = windFirstClientRec; rc != (clientRec * ) NULL;
 	rc = rc->w_nextClient)
     {
-	TxPrintf("'%10s'  %x %x %x %x\n", rc->w_clientName,
-	    rc->w_create, rc->w_delete,
-	    rc->w_redisplay, rc->w_command);
+	TxPrintf("'%10s'  %p %p %p %p\n", rc->w_clientName,
+	    (void*)rc->w_create, (void*)rc->w_delete,
+	    (void*)rc->w_redisplay, (void*)rc->w_command);
     }
 
     TxPrintf("\n");
@@ -134,9 +133,7 @@ windDump()
  * ----------------------------------------------------------------------------
  */
 
-void
-windPrintCommand(cmd)
-    TxCommand *cmd;
+void windPrintCommand(TxCommand *cmd)
 {
     if (cmd->tx_button == TX_NO_BUTTON)
     {

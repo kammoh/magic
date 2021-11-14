@@ -54,7 +54,7 @@ ResPrintNodeList(fp, list)
     for (; list != NULL; list = list->rn_more)
     {
 	fprintf(fp, "node %p: (%d %d) r= %d\n",
-	  	list, list->rn_loc.p_x, list->rn_loc.p_y, list->rn_noderes);
+	  	(void *) list, list->rn_loc.p_x, list->rn_loc.p_y, list->rn_noderes);
     }
 }
 
@@ -80,14 +80,14 @@ ResPrintResistorList(fp, list)
     for (; list != NULL; list = list->rr_nextResistor)
     {
 	if (fp == stdout)
-	    TxPrintf("r (%d,%d) (%d,%d) r=%d\n",
+	    TxPrintf("r (%d,%d) (%d,%d) r=%f\n",
 	          list->rr_connection1->rn_loc.p_x,
 	          list->rr_connection1->rn_loc.p_y,
 	          list->rr_connection2->rn_loc.p_x,
 	          list->rr_connection2->rn_loc.p_y,
 		  list->rr_value);
 	else
-	    fprintf(fp, "r (%d,%d) (%d,%d) r=%d\n",
+	    fprintf(fp, "r (%d,%d) (%d,%d) r=%f\n",
 	          list->rr_connection1->rn_loc.p_x,
 	          list->rr_connection1->rn_loc.p_y,
 	          list->rr_connection2->rn_loc.p_x,

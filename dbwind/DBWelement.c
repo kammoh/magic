@@ -29,6 +29,7 @@
 #include "utils/styles.h"
 #include "utils/malloc.h"
 #include "utils/signals.h"
+#include "textio/textio.h"
 
 /* Types of elements */
 

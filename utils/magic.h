@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <limits.h>
 #include <stdint.h>
+#include <stdio.h>
 
 /* ------------------- Universal pointer typecast --------------------- */
 
@@ -51,6 +52,7 @@ typedef int64_t dlong;
 
 #ifndef _CLIENTDATA
 typedef pointertype ClientData;
+#   define _CLIENTDATA
 #endif
 
 /* --------------------------- Booleans ------------------------------- */

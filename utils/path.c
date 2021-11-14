@@ -381,31 +381,32 @@ nextName(ppath, file, dest, size)
  */
 
 FILE *
-PaLockOpen(file, mode, ext, path, library, pRealName, is_locked)
-    char *file;			/* Name of the file to be opened. */
-    char *mode;			/* The file mode, as given to fopen. */
-    char *ext;			/* The extension to be added to the file name,
+PaLockOpen(
+    char *file,			/* Name of the file to be opened. */
+    char *mode,			/* The file mode, as given to fopen. */
+    char *ext,			/* The extension to be added to the file name,
 				 * or NULL.  Note:  this string must include
 				 * the dot (or whatever separator you use).
 				 */
-    char *path;			/* A search path:  a list of directory names
+    char *path,			/* A search path:  a list of directory names
 				 * separated by colons or blanks.  To use
 				 * only the working directory, use "." for
 				 * the path.
 				 */
-    char *library;		/* A 2nd path containing library names.  Can be
+    char *library,		/* A 2nd path containing library names.  Can be
 				 * NULL to indicate no library.
 				 */
-    char **pRealName;		/* Pointer to a location that will be filled
+    char **pRealName,		/* Pointer to a location that will be filled
 				 * in with the address of the real name of
 				 * the file that was successfully opened.
 				 * If NULL, then nothing is stored.
 				 */
-    bool *is_locked;		/* Pointer to a location to store the result
+    bool *is_locked 		/* Pointer to a location to store the result
 				 * of the attempt to grab an advisory lock
 				 * on the file.  If NULL, then nothing is
 				 * stored.
 				 */
+)
 {
     char extendedName[MAXSIZE], *p1, *p2;
     static char realName[MAXSIZE];
@@ -537,26 +538,27 @@ PaLockOpen(file, mode, ext, path, library, pRealName, is_locked)
  */
 
 FILE *
-PaOpen(file, mode, ext, path, library, pRealName)
-    char *file;			/* Name of the file to be opened. */
-    char *mode;			/* The file mode, as given to fopen. */
-    char *ext;			/* The extension to be added to the file name,
+PaOpen(
+    char *file,			/* Name of the file to be opened. */
+    char *mode,			/* The file mode, as given to fopen. */
+    char *ext,			/* The extension to be added to the file name,
 				 * or NULL.  Note:  this string must include
 				 * the dot (or whatever separator you use).
 				 */
-    char *path;			/* A search path:  a list of directory names
+    char *path,			/* A search path:  a list of directory names
 				 * separated by colons or blanks.  To use
 				 * only the working directory, use "." for
 				 * the path.
 				 */
-    char *library;		/* A 2nd path containing library names.  Can be
+    char *library,		/* A 2nd path containing library names.  Can be
 				 * NULL to indicate no library.
 				 */
-    char **pRealName;		/* Pointer to a location that will be filled
+    char **pRealName 		/* Pointer to a location that will be filled
 				 * in with the address of the real name of
 				 * the file that was successfully opened.
 				 * If NULL, then nothing is stored.
 				 */
+)
 {
     return PaLockOpen(file, mode, ext, path, library, pRealName, NULL);
 }

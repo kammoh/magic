@@ -30,6 +30,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header$";
 
 #include "tcltk/tclmagic.h"
 #include "utils/magic.h"
+#include "textio/textio.h"
 #include "utils/geometry.h"
 #include "tiles/tile.h"
 #include "utils/hash.h"

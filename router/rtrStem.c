@@ -46,6 +46,8 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include "utils/signals.h"
 #include "utils/maxrect.h"
 
+
+
 /* Used when searching for stems */
 typedef struct
 {
@@ -78,11 +80,53 @@ extern GCRPin *rtrStemTip();
 extern GCRPin *rtrStemTryPin();
 extern void rtrStemRange();
 
-bool rtrTreeSrArea();
-bool rtrSrArea();
-bool rtrStemMask();
-bool RtrComputeJogs();
+bool
+rtrTreeSrArea(
+    NLTermLoc *loc,	/* Terminal location under consideration */
+    int dir,		/* Direction away from loc that p lies */
+    Point *p,		/* Point at channel boundary */
+    CellUse *use 	/* Parent cell use */
+);
 
+bool
+RtrComputeJogs(
+    NLTermLoc *loc,	    /* Terminal whose stem is to be painted */
+    Point *stem,		/* Point intersecting channel*/
+    int dir,
+    Point *contact,		/* A second grid point, where a contact can
+				 * be placed if necessary.  This is a the
+				 * nearest grid crossing to crossing outside
+				 * the channel.
+				 */
+    Point *jog,			/* Where the stem crosses the first usable
+				 * grid line as it runs out from the cell.
+				 */
+    Point *start,		/* Somewhere along terminal area */
+    int width
+);
+
+bool
+rtrSrArea(
+    int	dir,
+    CellUse *use,
+    Rect *tmp,
+    int delta
+);
+
+bool
+rtrStemMask(
+    CellUse *routeUse,		/* Cell being routed */
+    NLTermLoc *loc,		/* Terminal */
+    int flags,			/* Blockage flags in the channel at the
+				 * crossing point.  If a layer is marked
+				 * as blocked in these flags, it is excluded
+				 * from finalMask since the channel router
+				 * will not have used it for routing a
+				 * signal.
+				 */
+    TileTypeBitMask *startMask,	/* Possible types for terminal */
+    TileTypeBitMask *finalMask 	/* Possible types for stem tip */
+);
 
 /*
  * ----------------------------------------------------------------------------
@@ -645,11 +689,12 @@ rtrStemTryPin(loc, dir, p, use)
  */
 
 bool
-rtrTreeSrArea(loc, dir, p, use)
-    NLTermLoc *loc;	/* Terminal location under consideration */
-    int dir;		/* Direction away from loc that p lies */
-    Point *p;		/* Point at channel boundary */
-    CellUse *use;	/* Parent cell use */
+rtrTreeSrArea(
+    NLTermLoc *loc,	/* Terminal location under consideration */
+    int dir,		/* Direction away from loc that p lies */
+    Point *p,		/* Point at channel boundary */
+    CellUse *use 	/* Parent cell use */
+)
 {
     Rect tmp, tmp1, tmp2;
     Point contact, jog, start;
@@ -677,7 +722,7 @@ rtrTreeSrArea(loc, dir, p, use)
     MAKEBOX(&start, &tmp1, width, 0);
     MAKEBOX(&jog, &tmp, width, 0);
     GeoInclude(&tmp1, &tmp);
-    if ( rtrSrArea(dir,use, &tmp,delta) )
+    if ( rtrSrArea(dir,use, &tmp, delta) )
 	return TRUE;
 
     MAKEBOX(&jog, &tmp1, width, 0);
@@ -713,11 +758,12 @@ rtrTreeSrArea(loc, dir, p, use)
 }
 
 bool
-rtrSrArea(dir,use,tmp,delta)
-    int	dir;
-    CellUse *use;
-    Rect *tmp;
-    int delta;
+rtrSrArea(
+    int	dir,
+    CellUse *use,
+    Rect *tmp,
+    int delta
+)
 {
     SearchContext scx;
     TileTypeBitMask r1mask, r2mask;
@@ -1129,18 +1175,19 @@ failure:
  */
 
 bool
-rtrStemMask(routeUse, loc, flags, startMask, finalMask)
-    CellUse *routeUse;		/* Cell being routed */
-    NLTermLoc *loc;		/* Terminal */
-    int flags;			/* Blockage flags in the channel at the
+rtrStemMask(
+    CellUse *routeUse,		/* Cell being routed */
+    NLTermLoc *loc,		/* Terminal */
+    int flags,			/* Blockage flags in the channel at the
 				 * crossing point.  If a layer is marked
 				 * as blocked in these flags, it is excluded
 				 * from finalMask since the channel router
 				 * will not have used it for routing a
 				 * signal.
 				 */
-    TileTypeBitMask *startMask;	/* Possible types for terminal */
-    TileTypeBitMask *finalMask;	/* Possible types for stem tip */
+    TileTypeBitMask *startMask,	/* Possible types for terminal */
+    TileTypeBitMask *finalMask 	/* Possible types for stem tip */
+)
 {
     Rect tmp;
 
@@ -1234,18 +1281,21 @@ rtrStemTypes(startMask, finalMask, startType, finalType)
  */
 
 bool
-RtrComputeJogs(loc, stem, dir, contact, jog, start, width)
-    NLTermLoc *loc;	/* Terminal whose stem is to be painted */
-    Point *stem;		/* Point intersecting channel*/
-    Point *start;		/* Somewhere along terminal area */
-    Point *jog;			/* Where the stem crosses the first usable
-				 * grid line as it runs out from the cell.
-				 */
-    Point *contact;		/* A second grid point, where a contact can
+RtrComputeJogs(
+    NLTermLoc *loc,	    /* Terminal whose stem is to be painted */
+    Point *stem,		/* Point intersecting channel*/
+    int dir,
+    Point *contact,		/* A second grid point, where a contact can
 				 * be placed if necessary.  This is a the
 				 * nearest grid crossing to crossing outside
 				 * the channel.
 				 */
+    Point *jog,			/* Where the stem crosses the first usable
+				 * grid line as it runs out from the cell.
+				 */
+    Point *start,		/* Somewhere along terminal area */
+    int width
+)
 {
     Rect *area;
     area = &loc->nloc_rect;

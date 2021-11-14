@@ -37,6 +37,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include "textio/txcommands.h"
 #include "plow/plow.h"
 #include "select/select.h"
+#include "textio/textio.h"
 
 /*
  * ----------------------------------------------------------------------------

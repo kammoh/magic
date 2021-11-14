@@ -40,9 +40,9 @@ typedef struct {	/* Colormap table entry */
 } colorEntry;
 
 /* Housekeeping and initialization routines */
-extern bool (*GrInitPtr)();
-extern void (*GrClosePtr)();
-extern void (*GrTextSizePtr)();
+bool (*GrInitPtr)();
+void (*GrClosePtr)();
+void (*GrTextSizePtr)();
 
 /*
  * Display painting and text routines
@@ -50,96 +50,101 @@ extern void (*GrTextSizePtr)();
  *    You must call GrLock() before using these, and
  *    call GrUnlock() afterwards.
  */
-extern void (*GrLockPtr)();
-extern void (*GrUnlockPtr)();
-extern bool GrHaveLock();
-extern void GrClipTo();
-extern void GrClipBox();
-extern void GrClipLine();
-extern bool GrPutText();
-extern void GrFillPolygon();
-extern void (*GrDrawGlyphPtr)();
-extern void (*GrBitBltPtr)();
-extern int  (*GrReadPixelPtr)();
-extern void (*GrFlushPtr)();
+void (*GrLockPtr)();
+void (*GrUnlockPtr)();
+bool GrHaveLock();
+void GrClipTo();
+void GrClipBox();
+void GrClipLine();
+bool GrPutText();
+void GrFillPolygon();
+void (*GrDrawGlyphPtr)();
+void (*GrBitBltPtr)();
+int  (*GrReadPixelPtr)();
+void (*GrFlushPtr)();
 
 /* Tablet routines */
-extern void (*GrEnableTabletPtr)();
-extern void (*GrDisableTabletPtr)();
-extern void (*GrSetCursorPtr)();
+void (*GrEnableTabletPtr)();
+void (*GrDisableTabletPtr)();
+void (*GrSetCursorPtr)();
 
 /* graphics routines that are called in the same way for all displays */
-extern int  GrLoadStyles();
-extern bool GrLoadCursors();
-extern bool GrSetDisplay();
-extern bool GrIsDisplay();
-extern void GrLabelSize();
-extern void GrSetStuff();
-extern void GrDrawFastBox();
-extern void GrGuessDisplayType();
-extern int  GrGetStyleFromName();
-extern bool GrDrawGlyphNum();
+int  GrLoadStyles();
+bool GrLoadCursors();
+bool GrSetDisplay();
+bool GrIsDisplay();
+void GrLabelSize();
+void GrSetStuff();
+void GrDrawFastBox();
+void GrGuessDisplayType(
+    char **graphics,		/* default device for sending out graphics */
+    char **mouse,		/* default device for reading mouse (tablet) */
+    char **display,		/* default type of device (OGL, etc...) */
+    char **monitor		/* default type of monitor (pale, std) */
+);
+int  GrGetStyleFromName();
+bool GrDrawGlyphNum();
 
 #define GrFastBox(x)	GrDrawFastBox(x, 0)
 
 /* external color map routines */
-extern bool GrReadCMap(), GrSaveCMap();
-extern bool GrGetColor(), GrPutColor();
-extern int  GrNameToColor();
-extern void GrPutManyColors();
-extern void (*GrSetCMapPtr)();
-extern void GrResetCMap();
+bool GrReadCMap(), GrSaveCMap();
+bool GrGetColor(), GrPutColor();
+int  GrNameToColor();
+void GrPutManyColors();
+void (*GrSetCMapPtr)();
+void GrResetCMap();
 
 /* Routines for windows, called only if non-null.  See SUN160 driver for
  * details.
  */
-extern bool (*GrCreateWindowPtr)();	/* Passed a window just after it is
+bool (*GrCreateWindowPtr)();	/* Passed a window just after it is
 					 * created.
 					 */
-extern void (*GrDeleteWindowPtr)();	/* Passed a window just before it
+void (*GrDeleteWindowPtr)();	/* Passed a window just before it
 					 * is destroyed.
 					 */
-extern void (*GrDamagedPtr)();		/* Called at a conventient time after
+void (*GrDamagedPtr)();		/* Called at a conventient time after
 					 * receiving a SIG_WINCH signal.
 					 */
-extern void (*GrUpdateIconPtr)(); 	/* Adjust text on icon.
+void (*GrUpdateIconPtr)(); 	/* Adjust text on icon.
 					 */
-extern bool (*GrEventPendingPtr)(); 	/* Check for pending graphics events.
+bool (*GrEventPendingPtr)(); 	/* Check for pending graphics events.
 					 */
-extern void (*GrConfigureWindowPtr)();	/* Called to reconfigure size/location
+void (*GrConfigureWindowPtr)();	/* Called to reconfigure size/location
 					 * of an existing window.
 					 */
-extern void (*GrOverWindowPtr)();	/* Raise window to top of stack.
+void (*GrOverWindowPtr)();	/* Raise window to top of stack.
 					 */
-extern void (*GrUnderWindowPtr)();	/* Lower window to bottom of stack.
+void (*GrUnderWindowPtr)();	/* Lower window to bottom of stack.
 					 */
-extern int (*GrWindowIdPtr)(); 		/* Get the window ID from a window name
+int (*GrWindowIdPtr)(); 		/* Get the window ID from a window name
 					 */
-extern char *(*GrWindowNamePtr)(); 	/* Get the window name from a MagWin ptr.
+char *(*GrWindowNamePtr)(); 	/* Get the window name from a MagWin ptr.
 					 */
-extern bool (*GrGetCursorPosPtr)(); 	/* Get the current cursor position
+bool (*GrGetCursorPosPtr)(); 	/* Get the current cursor position
 					 */
-extern bool (*GrGetCursorRootPosPtr)();	/* Get the current cursor position
+bool (*GrGetCursorRootPosPtr)();	/* Get the current cursor position
 					 * in root (screen) coordinates
 					 */
 
 /* Backing store mechanism (added 4/2/05) */
-extern bool (*GrGetBackingStorePtr)();
-extern bool (*GrScrollBackingStorePtr)();
-extern void (*GrPutBackingStorePtr)();
-extern void (*GrCreateBackingStorePtr)();
-extern void (*GrFreeBackingStorePtr)();
+bool (*GrGetBackingStorePtr)();
+bool (*GrScrollBackingStorePtr)();
+void (*GrPutBackingStorePtr)();
+void (*GrCreateBackingStorePtr)();
+void (*GrFreeBackingStorePtr)();
 
 /* Routines called by the signals module just before Magic is stopped
  * (such as via ^Z) and just after it is resumed.
  */
-extern void (*GrStopPtr)();
-extern void (*GrResumePtr)();
+void (*GrStopPtr)();
+void (*GrResumePtr)();
 #define GrStop	(*GrStopPtr)
 #define GrResume (*GrResumePtr)
 
 /* Number of colors defined in the colormap */
-extern int GrNumColors;
+int GrNumColors;
 
 /* Different graphics (OpenGL vs. X11, for instance) have different
  * definitions of line and rectangle/polygon coordinates.  Usually
@@ -147,21 +152,21 @@ extern int GrNumColors;
  * GrPixelCorrect should be set to 0 for OpenGL and other real-valued
  * coordinate systems, 1 for X11 and other pixel-based systems.
  */
-extern int GrPixelCorrect;
+int GrPixelCorrect;
 
 /* The size of the screen in screen coordinates */
-extern Rect GrScreenRect;
+Rect GrScreenRect;
 
 /* The size of crosses (drawn for zero-size boxes), in pixels. */
-extern Rect GrCrossRect;
+Rect GrCrossRect;
 
 /* Multiples of the grid spacing which we draw lighter, for a fading effect */
-extern unsigned char GrGridMultiple;
+unsigned char GrGridMultiple;
 
 /* Style tables */
-extern GR_STYLE_LINE *GrStyleTable;
-extern int **GrStippleTable;
-extern int GrStyleNames[];
+GR_STYLE_LINE *GrStyleTable;
+int **GrStippleTable;
+int GrStyleNames[];
 
 #ifndef lint
 
@@ -188,7 +193,7 @@ extern int GrStyleNames[];
 #endif
 
 enum { DISPLAY_IDLE, DISPLAY_IN_PROGRESS, DISPLAY_BREAK_PENDING, DISPLAY_SUSPEND };
-extern unsigned char GrDisplayStatus;
+unsigned char GrDisplayStatus;
 
 /* constants */
 

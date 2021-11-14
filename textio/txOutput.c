@@ -1,7 +1,7 @@
 /*
  * txOutput.c --
  *
- * 	Handles 'stdout' and 'stderr' output.
+ *         Handles 'stdout' and 'stderr' output.
  *
  *     *********************************************************************
  *     * Copyright (C) 1985, 1990 Regents of the University of California. *
@@ -24,7 +24,7 @@ static char rcsid[] __attribute__ ((unused)) = "$Header: /usr/cvsroot/magic-8.0/
 #include <stdarg.h>
 #include <string.h>
 
-#ifndef	SYSV
+#ifndef        SYSV
 #include <sys/wait.h>
 #endif /* SYSV */
 #include <sys/stat.h>
@@ -58,20 +58,20 @@ static bool txPrintFlag = TRUE;
  * ----------------------------------------------------------------------------
  * txFprintfBasic:
  *
- *	Textio's own version of printf.  Not to be used outside of this module.
+ *        Textio's own version of printf.  Not to be used outside of this module.
  *
  * Tricks:
- *	Called with a variable number of arguments -- may not be portable.
+ *        Called with a variable number of arguments -- may not be portable.
  *
  * Results:
- *	None.
+ *        None.
  *
  * Side effects:
- *	text appears on stdout on the text terminal
+ *        text appears on stdout on the text terminal
  *
  * Note:
- *	Many thanks to Paul Chow at Stanford for getting this to run on
- *	a Pyramid machine.
+ *        Many thanks to Paul Chow at Stanford for getting this to run on
+ *        a Pyramid machine.
  * ----------------------------------------------------------------------------
  */
 
@@ -87,75 +87,70 @@ txFprintfBasic(FILE *f, ...)
     va_end(args);
 }
 
-
+#ifndef TX_PRINTF_MACRO
 /*
  * ----------------------------------------------------------------------------
  * TxPrintf:
  *
- *	Magic's own version of printf
+ *        Magic's own version of printf
  *
  * Tricks:
- *	Called with a variable number of arguments -- may not be portable.
+ *        Called with a variable number of arguments -- may not be portable.
  *
  * Results:
- *	None.
+ *        None.
  *
  * Side effects:
- *	text appears on stdout on the text terminal
+ *        text appears on stdout on the text terminal
  *
  * Note:
- *	Many thanks to Paul Chow at Stanford for getting this to run on
- *	a Pyramid machine.
+ *        Many thanks to Paul Chow at Stanford for getting this to run on
+ *        a Pyramid machine.
  * ----------------------------------------------------------------------------
  */
 
-void
-TxPrintf(char *fmt, ...)
+void TxPrintf(char *fmt, ...)
 {
-    va_list args;
-    FILE *f;
-
     if (txPrintFlag)
     {
-	if (TxMoreFile != NULL)
-	{
-	    f = TxMoreFile;
-	}
-	else
-	{
-	    f = stdout;
-	}
-
-	if (txHavePrompt)
-	{
-	    TxUnPrompt();
-	    va_start(args, fmt);
-	    Vfprintf(f, fmt, args);
-	    va_end(args);
-	    TxPrompt();
-	}
-	else
-	{
-	    va_start(args, fmt);
-	    Vfprintf(f, fmt, args);
-	    va_end(args);
-	}
-
-	return;
+        va_list args;
+        FILE *f;
+        if (TxMoreFile != NULL)
+        {
+            f = TxMoreFile;
+        }
+        else
+        {
+            f = stdout;
+        }
+        
+        va_start(args, fmt);
+        if (txHavePrompt)
+        {
+            TxUnPrompt();
+            Vfprintf(f, fmt, args);
+            TxPrompt();
+        }
+        else
+        {
+            Vfprintf(f, fmt, args);
+        }
+        va_end(args);
     }
 }
+#endif
 
 /*
  * ----------------------------------------------------------------------------
  * TxPrintString --
  *
- *	A version of printf which writes output into a string.
+ *        A version of printf which writes output into a string.
  *
  * Results:
- *	A string which is valid until the next call to TxPrintString().
+ *        A string which is valid until the next call to TxPrintString().
  *
  * Side effects:
- *	None.
+ *        None.
  *
  * ----------------------------------------------------------------------------
  */
@@ -170,8 +165,8 @@ TxPrintString(char *fmt, ...)
 
     if (outstr == NULL)
     {
-	outlen = 100;
-	outstr = (char *) mallocMagic((unsigned) (outlen + 1));
+        outlen = 100;
+        outstr = (char *) mallocMagic((unsigned) (outlen + 1));
     }
 
     va_start(args, fmt);
@@ -180,15 +175,15 @@ TxPrintString(char *fmt, ...)
 
     if (nchars >= outlen)
     {
-	outlen = nchars + 1;
-	freeMagic(outstr);
-	outstr = (char *) mallocMagic((unsigned) (outlen + 1));
-	va_start(args, fmt);
-	vsnprintf(outstr, outlen, fmt, args);
-	va_end(args);
+        outlen = nchars + 1;
+        freeMagic(outstr);
+        outstr = (char *) mallocMagic((unsigned) (outlen + 1));
+        va_start(args, fmt);
+        vsnprintf(outstr, outlen, fmt, args);
+        va_end(args);
     }
     if (nchars == -1)
-	return NULL;
+        return NULL;
 
     return outstr;
 }
@@ -198,10 +193,10 @@ TxPrintString(char *fmt, ...)
  * ----------------------------------------------------------------------------
  * TxPrintOn --
  *
- *	Enables TxPrintf() output.
+ *        Enables TxPrintf() output.
  *
  * Results:
- *	Previous value of flag.
+ *        Previous value of flag.
  *
  * ----------------------------------------------------------------------------
  */
@@ -221,10 +216,10 @@ TxPrintOn()
  * ----------------------------------------------------------------------------
  * TxPrintOff --
  *
- *	Disables TxPrintf() output.
+ *        Disables TxPrintf() output.
  *
  * Results:
- *	Previous value of flag.
+ *        Previous value of flag.
  *
  * ----------------------------------------------------------------------------
  */
@@ -246,10 +241,10 @@ TxPrintOff()
  * ----------------------------------------------------------------------------
  * TxFlush --
  *
- *	Flush the standard out and error out.
+ *        Flush the standard out and error out.
  *
  * Results:
- *	None.
+ *        None.
  *
  * ----------------------------------------------------------------------------
  */
@@ -284,20 +279,20 @@ TxFlush()
  * ----------------------------------------------------------------------------
  * TxError:
  *
- *	Magic's own version of printf, but it goes to stderr
+ *        Magic's own version of printf, but it goes to stderr
  *
  * Tricks:
- *	Called with a variable number of arguments -- may not be portable.
+ *        Called with a variable number of arguments -- may not be portable.
  *
  * Results:
- *	None.
+ *        None.
  *
  * Side effects:
- *	text appears on stderr on the text terminal
+ *        text appears on stderr on the text terminal
  *
  * Note:
- *	Many thanks to Paul Chow at Stanford for getting this to run on
- *	a Pyramid machine.
+ *        Many thanks to Paul Chow at Stanford for getting this to run on
+ *        a Pyramid machine.
  * ----------------------------------------------------------------------------
  */
 
@@ -309,18 +304,18 @@ TxError(char *fmt, ...)
 
     TxFlushOut();
     if (TxMoreFile != NULL)
-	f = TxMoreFile;
+        f = TxMoreFile;
     else
-	f = stderr;
+        f = stderr;
     va_start(args, fmt);
     if (txHavePrompt)
     {
-	TxUnPrompt();
-	Vfprintf(f, fmt, args);
-	TxPrompt();
+        TxUnPrompt();
+        Vfprintf(f, fmt, args);
+        TxPrompt();
     }
     else {
-	Vfprintf(f, fmt, args);
+        Vfprintf(f, fmt, args);
     }
     va_end(args);
     TxFlushErr();
@@ -334,15 +329,15 @@ TxError(char *fmt, ...)
  *
  * TxUseMore --
  *
- * 	This procedure forks a "more" process and causes TxError and TxPrintf
- *	to send output through it.
+ *         This procedure forks a "more" process and causes TxError and TxPrintf
+ *        to send output through it.
  *
  * Results:
- *	None.
+ *        None.
  *
  * Side effects:
- *	A file is opened.  When the caller is finished with output,
- *	it must call TxStopMore to clean up the process.
+ *        A file is opened.  When the caller is finished with output,
+ *        it must call TxStopMore to clean up the process.
  *
  * ----------------------------------------------------------------------------
  */
@@ -361,27 +356,27 @@ TxUseMore()
 
     /* Determine if "more" executable exists and is world executable */
     /* before attempting a fork.  Check environment variable PAGER   */
-    /* first before defaulting to the built-in value PAGERDIR	     */
-    /* (see utils/paths.h).					     */
+    /* first before defaulting to the built-in value PAGERDIR             */
+    /* (see utils/paths.h).                                             */
 
     if ((useenv = getenv("PAGER")) == NULL)
     {
-	pagerpath = (char *) mallocMagic((unsigned) (strlen(PAGERDIR) + 1));
-	strcpy(pagerpath, PAGERDIR);
+        pagerpath = (char *) mallocMagic((unsigned) (strlen(PAGERDIR) + 1));
+        strcpy(pagerpath, PAGERDIR);
     }
     else
-	pagerpath = useenv;
+        pagerpath = useenv;
 
     if ((stat(pagerpath, &buf) < 0) || !(buf.st_mode & S_IXOTH))
     {
-	if (!moreMsg)
-	{
-	    TxError("Couldn't execute %s to filter output.\nTry setting "
-		    "environment variable PAGER to your favorite pager\n\n",
-		    pagerpath);
-	    moreMsg = TRUE;
-	}
-	goto done;
+        if (!moreMsg)
+        {
+            TxError("Couldn't execute %s to filter output.\nTry setting "
+                    "environment variable PAGER to your favorite pager\n\n",
+                    pagerpath);
+            moreMsg = TRUE;
+        }
+        goto done;
     }
 
     pipe(pipeEnds);
@@ -393,18 +388,18 @@ TxUseMore()
 
     if (txMorePid == 0)
     {
-	char *argv[100];
-	close(pipeEnds[1]);
-	dup2(pipeEnds[0], 0);
-	if ((pagername = strrchr(pagerpath, '/')) != (char *) 0)
-	    pagername++;
-	else
-	    pagername = pagerpath;
-	execl(pagerpath, pagername, 0);
+        char *argv[100];
+        close(pipeEnds[1]);
+        dup2(pipeEnds[0], 0);
+        if ((pagername = strrchr(pagerpath, '/')) != (char *) 0)
+            pagername++;
+        else
+            pagername = pagerpath;
+        execl(pagerpath, pagername, 0);
 
-	/* Something went very wrong if it gets here. */
+        /* Something went very wrong if it gets here. */
 
-	_exit(-1);
+        _exit(-1);
     }
 
     /* This is the parent process.  Close the input descriptor and make
@@ -424,14 +419,14 @@ done:
  *
  * TxStopMore --
  *
- * 	Close the pipe connecting us to a "more" process and wait for
- *	the "more" process to die.
+ *         Close the pipe connecting us to a "more" process and wait for
+ *        the "more" process to die.
  *
  * Results:
- *	None.
+ *        None.
  *
  * Side effects:
- *	The connection to more is closed.
+ *        The connection to more is closed.
  *
  * ----------------------------------------------------------------------------
  */
@@ -459,7 +454,7 @@ TxStopMore()
 
 #endif /* !MAGIC_WRAPPER */
 
-#ifdef	NEED_VFPRINTF
+#ifdef        NEED_VFPRINTF
 
 int
 vfprintf(FILR *iop, char *fmt, va_list args_in)
@@ -474,16 +469,16 @@ vfprintf(FILR *iop, char *fmt, va_list args_in)
 
     va_copy(ap, args_in);
     if (iop->_flag & _IONBF) {
-	iop->_flag &= ~_IONBF;
-	iop->_ptr = iop->_base = localbuf;
-	len = _doprnt(fmt, ap, iop);
-	(void) fflush(iop);
-	iop->_flag |= _IONBF;
-	iop->_base = NULL;
-	iop->_bufsiz = 0;
-	iop->_cnt = 0;
+        iop->_flag &= ~_IONBF;
+        iop->_ptr = iop->_base = localbuf;
+        len = _doprnt(fmt, ap, iop);
+        (void) fflush(iop);
+        iop->_flag |= _IONBF;
+        iop->_base = NULL;
+        iop->_bufsiz = 0;
+        iop->_cnt = 0;
     } else
-	len = _doprnt(fmt, ap, iop);
+        len = _doprnt(fmt, ap, iop);
 
     va_end(ap);
     return (ferror(iop) ? EOF : len);

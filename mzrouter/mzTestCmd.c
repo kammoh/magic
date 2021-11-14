@@ -534,39 +534,55 @@ mzVersionCmd(w, cmd)
 /*--------------------------- Command Table ------------------------------ */
 
 TestCmdTableE mzTestCommands[] = {
-    "debug",	mzDebugTstCmd,
-    "set or clear debug flags",
-    "debug [flag] [value]",
+        {
+            "debug",	mzDebugTstCmd,
+            "set or clear debug flags",
+            "debug [flag] [value]"
+        },
 
-    "dumpEstimates", mzDumpEstimatesTstCmd,
-    "print global estimate info for tiles under box",
-    "dumpEstimates",
+        {
+            "dumpEstimates", mzDumpEstimatesTstCmd,
+            "print global estimate info for tiles under box",
+            "dumpEstimates"
+        },
 
-    "dumpTags", mzDumpTagsTstCmd,
-    "print tag info on data tiles under box",
-    "dumpTags",
+        {
+            "dumpTags", mzDumpTagsTstCmd,
+            "print tag info on data tiles under box",
+            "dumpTags"
+        },
 
-    "help",	mzHelpTstCmd,
-    "summarize *mzroute subcommands",
-    "help [subcommand]",
+        {
+            "help",	mzHelpTstCmd,
+            "summarize *mzroute subcommands",
+            "help [subcommand]"
+        },
 
-    "numberLine", mzNumberLineTstCmd,
-    "exercise numberline code",
-    "numberLine",
+        {
+            "numberLine", mzNumberLineTstCmd,
+            "exercise numberline code",
+            "numberLine"
+        },
 
-    "parms",	mzParmsTstCmd,
-    "print internal data structures",
-    "parms",
+        {
+            "parms",	mzParmsTstCmd,
+            "print internal data structures",
+            "parms"
+        },
 
-    "plane",	mzPlaneTstCmd,
-    "make internal tile plane visible",
-    "plane [plane]",
+        {
+            "plane",	mzPlaneTstCmd,
+            "make internal tile plane visible",
+            "plane [plane]"
+        },
 
-    "version",	mzVersionCmd,
-    "identify mzrouter version",
-    "version",
+        {
+            "version",	mzVersionCmd,
+            "identify mzrouter version",
+            "version"
+        },
 
-     0
+        0
     }, *mzTestCmdP;
 
 void
